@@ -18,7 +18,7 @@
             <!--  <sonar.host.url>https://sonarqube.com</sonar.host.url> -->
               <sonar.host.url>https://sonarqube.octodemoapps.com</sonar.host.url>
               <sonar.verbose>true</sonar.verbose>
-              <sonar.login>${SONAR_PASS}</sonar.login>
+              <sonar.login>${env.SONAR_PASS}</sonar.login>
               <!--<sonar.analysis.mode>preview</sonar.analysis.mode>
                <sonar.github.oauth></sonar.github.oauth>
                ${GH_ACCESS_TOKEN}

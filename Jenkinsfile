@@ -9,7 +9,7 @@ pipeline {
            }
             steps {
                 bat 'mvn clean verify sonar:sonar'
-                bat 'mvn clean verify sonar:sonar -Dsonar.analysis.mode=preview -Dsonar.github.pullRequest=1 -Dsonar.github.repository=birds-of-a-feather/dc-summit-integration-workshop-ci-java -Dsonar.github.oauth=${GH_ACCESS_TOKEN}'
+                bat 'mvn clean verify sonar:sonar -Dsonar.analysis.mode=preview -Dsonar.github.pullRequest=1 -Dsonar.github.repository=birds-of-a-feather/dc-summit-integration-workshop-ci-java -Dsonar.github.oauth=%GH_ACCESS_TOKEN%'
             }
         }
     }

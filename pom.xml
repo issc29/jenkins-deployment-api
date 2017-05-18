@@ -6,9 +6,29 @@
   <artifactId>textdecarator</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
-
   <name>textdecarator</name>
-  <url>http://maven.apache.org</url>
+
+  <profiles>
+      <profile>
+          <id>sonar</id>
+          <activation>
+              <activeByDefault>true</activeByDefault>
+          </activation>
+          <properties>
+            <!--  <sonar.host.url>https://sonarqube.com</sonar.host.url> -->
+              <sonar.host.url>https://sonarqube.octodemoapps.com</sonar.host.url>
+              <sonar.verbose>true</sonar.verbose>
+              <sonar.login>${env.SONAR_PASS}</sonar.login>
+              <!--<sonar.analysis.mode>preview</sonar.analysis.mode>
+               <sonar.github.oauth></sonar.github.oauth>
+               ${GH_ACCESS_TOKEN}
+              <sonar.github.repository>birds-of-a-feather/dc-summit-integration-workshop-ci-java</sonar.github.repository>
+              <sonar.github.pullRequest>${PR_NUM}</sonar.github.pullRequest> -->
+
+              <!--<sonar.organization>issc29-github</sonar.organization>-->
+          </properties>
+      </profile>
+   </profiles>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -25,6 +45,15 @@
         </configuration>
       </plugin>
     </plugins>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.sonarsource.scanner.maven</groupId>
+          <artifactId>sonar-maven-plugin</artifactId>
+          <version>3.2</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
   </build>
 
   <dependencies>

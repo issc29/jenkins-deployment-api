@@ -19,7 +19,7 @@ pipeline {
           }
         }
         stage('Sonar - PR') {
-         when { branch "PR-*"}
+         when { expression { return env.CHANGE_ID != "" } }
         environment {
                SONAR_PASS = credentials('issc29-sonar')
                GH_ACCESS_TOKEN = credentials('issc29-gh-sonar')

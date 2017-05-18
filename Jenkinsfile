@@ -19,7 +19,7 @@ pipeline {
           }
         }
         stage('Sonar - PR') {
-         when { branch "PR-*"}
+         when { expression { return env.CHANGE_ID != null } }
         environment {
                SONAR_PASS = credentials('issc29-sonar')
                GH_ACCESS_TOKEN = credentials('issc29-gh-sonar')
@@ -27,10 +27,10 @@ pipeline {
            steps {
             script {
               if(isUnix()) {
-                sh 'mvn clean verify sonar:sonar -Dsonar.analysis.mode=preview -Dsonar.github.pullRequest=${CHANGE_ID} -Dsonar.github.repository=birds-of-a-feather/dc-summit-integration-workshop-ci-java -Dsonar.github.oauth=${GH_ACCESS_TOKEN}'
+                sh 'mvn clean verify sonar:sonar -Dsonar.analysis.mode=preview -Dsonar.github.pullRequest=${CHANGE_ID} -Dsonar.github.repository=birds-of-a-feather/dc-summit-integration-workshop-ci-jira -Dsonar.github.oauth=${GH_ACCESS_TOKEN}'
                 }
               else {
-                bat 'mvn clean verify sonar:sonar -Dsonar.analysis.mode=preview -Dsonar.github.pullRequest=%CHANGE_ID% -Dsonar.github.repository=birds-of-a-feather/dc-summit-integration-workshop-ci-java -Dsonar.github.oauth=%GH_ACCESS_TOKEN%'
+                bat 'mvn clean verify sonar:sonar -Dsonar.analysis.mode=preview -Dsonar.github.pullRequest=%CHANGE_ID% -Dsonar.github.repository=birds-of-a-feather/dc-summit-integration-workshop-ci-jira -Dsonar.github.oauth=%GH_ACCESS_TOKEN%'
               }
             }
           }

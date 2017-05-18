@@ -7,10 +7,33 @@ pipeline {
                SONAR_PASS = credentials('issc29-sonar')
                GH_ACCESS_TOKEN = credentials('issc29-gh-sonar')
            }
-            steps {
+           steps {
+            script {
+              if(isUnix()) {
+                sh 'mvn clean verify sonar:sonar'
+                }
+              else {
                 bat 'mvn clean verify sonar:sonar'
-                bat 'mvn clean verify sonar:sonar -Dsonar.analysis.mode=preview -Dsonar.github.pullRequest=1 -Dsonar.github.repository=birds-of-a-feather/dc-summit-integration-workshop-ci-java -Dsonar.github.oauth=%GH_ACCESS_TOKEN%'
+              }
             }
+          }
+        }
+        stage('Sonar - PR') {
+         when { branch "PR-*"}
+        environment {
+               SONAR_PASS = credentials('issc29-sonar')
+               GH_ACCESS_TOKEN = credentials('issc29-gh-sonar')
+           }
+           steps {
+            script {
+              if(isUnix()) {
+                sh 'mvn clean verify sonar:sonar -Dsonar.analysis.mode=preview -Dsonar.github.pullRequest=${CHANGE_ID} -Dsonar.github.repository=birds-of-a-feather/dc-summit-integration-workshop-ci-java -Dsonar.github.oauth=${GH_ACCESS_TOKEN}'
+                }
+              else {
+                bat 'mvn clean verify sonar:sonar -Dsonar.analysis.mode=preview -Dsonar.github.pullRequest=%CHANGE_ID% -Dsonar.github.repository=birds-of-a-feather/dc-summit-integration-workshop-ci-java -Dsonar.github.oauth=%GH_ACCESS_TOKEN%'
+              }
+            }
+          }
         }
     }
 }

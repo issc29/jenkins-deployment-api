@@ -11,8 +11,6 @@ This Repo is based off of the [Text Decarator](https://github.com/birds-of-a-fea
 - CircleCI - After a commit or PR, a CircleCI build runs
 - Slack - Branches and commits are sent to a slack channel
 
-<!--
 ## License
 
 The project is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
--->

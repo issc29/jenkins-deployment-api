@@ -27,10 +27,10 @@ pipeline {
            steps {
             script {
               if(isUnix()) {
-                sh 'mvn clean verify sonar:sonar -Dsonar.analysis.mode=preview -Dsonar.github.pullRequest=${CHANGE_ID} -Dsonar.github.repository=birds-of-a-feather/boston-summit-integration-workshop-jira-sonar -Dsonar.github.oauth=${GH_ACCESS_TOKEN}'
+               // sh 'mvn clean verify sonar:sonar -Dsonar.analysis.mode=preview -Dsonar.github.pullRequest=${CHANGE_ID} -Dsonar.github.repository=birds-of-a-feather/boston-summit-integration-workshop-jira-sonar -Dsonar.github.oauth=${GH_ACCESS_TOKEN}'
                 }
               else {
-                bat 'mvn clean verify sonar:sonar -Dsonar.analysis.mode=preview -Dsonar.github.pullRequest=%CHANGE_ID% -Dsonar.github.repository=birds-of-a-feather/boston-summit-integration-workshop-jira-sonar -Dsonar.github.oauth=%GH_ACCESS_TOKEN%'
+               // bat 'mvn clean verify sonar:sonar -Dsonar.analysis.mode=preview -Dsonar.github.pullRequest=%CHANGE_ID% -Dsonar.github.repository=birds-of-a-feather/boston-summit-integration-workshop-jira-sonar -Dsonar.github.oauth=%GH_ACCESS_TOKEN%'
               }
             }
           }

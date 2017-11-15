@@ -2,7 +2,7 @@ node {
     def scmVars
     stage('build') {
       scmVars = checkout scm
-      bat 'mvn clean install'
+      sh 'mvn clean install'
     }
 
     stage('Deploy') {

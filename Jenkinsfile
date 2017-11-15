@@ -35,7 +35,7 @@ node {
       }
 
       // Execute Deployment
-      def deployStatus = sh returnStatus: true, script: 'mvn deploy:deploy'
+      def deployStatus = sh returnStatus: true, script: 'echo deploy'
 
       // Record new Deployment Status based on output
       def result = (deployStatus) ? 'failure' : 'success'

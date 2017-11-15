@@ -17,6 +17,9 @@ node {
       def repo = ""
       def deployURL = "https://api.github.com/repos/${owner}/${repo}/deployments"
       def deployBody = '{"ref": "' + ref +'","environment": "' + environment  +'","description": "' + description + '"}'
+      def matcher = url =~ /(?:[^\/]*\/){3}(.*)\/(.*)/;
+      println matcher[0][0]
+      println matcher[0][1]
 
       println ref
       println url

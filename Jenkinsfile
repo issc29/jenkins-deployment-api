@@ -1,39 +1,50 @@
-pipeline {
-    agent any
-
-    stages {
-        stage('Build') {
-        environment {
-               SONAR_PASS = credentials('issc29-sonar')
-               GH_ACCESS_TOKEN = credentials('issc29-gh-sonar')
-           }
-           steps {
-            script {
-              if(isUnix()) {
-                sh 'mvn clean verify sonar:sonar'
-                }
-              else {
-                bat 'mvn clean verify sonar:sonar'
-              }
-            }
-          }
-        }
-        stage('Sonar - PR') {
-         when { expression { return env.CHANGE_ID != null } }
-        environment {
-               SONAR_PASS = credentials('issc29-sonar')
-               GH_ACCESS_TOKEN = credentials('issc29-gh-sonar')
-           }
-           steps {
-            script {
-              if(isUnix()) {
-               // sh 'mvn clean verify sonar:sonar -Dsonar.analysis.mode=preview -Dsonar.github.pullRequest=${CHANGE_ID} -Dsonar.github.repository=birds-of-a-feather/boston-summit-integration-workshop-jira-sonar -Dsonar.github.oauth=${GH_ACCESS_TOKEN}'
-                }
-              else {
-               // bat 'mvn clean verify sonar:sonar -Dsonar.analysis.mode=preview -Dsonar.github.pullRequest=%CHANGE_ID% -Dsonar.github.repository=birds-of-a-feather/boston-summit-integration-workshop-jira-sonar -Dsonar.github.oauth=%GH_ACCESS_TOKEN%'
-              }
-            }
-          }
-        }
+node {
+    def scmVars
+    stage('build') {
+      scmVars = checkout scm
+      bat 'mvn clean install'
     }
+
+    stage('Deploy') {
+
+      def environment = "Prod"
+      def description = "Deploying my branch"
+      def ref = scmVars.GIT_COMMIT
+      def url = scmVars.GIT_URL
+      def owner = ""
+      def repo = ""
+      def deployURL = "https://api.github.com/repos/${owner}/${repo}/deployments"
+      def deployBody = '{"ref": "' + ref +'","environment": "' + environment  +'","description": "' + description + '"}'
+
+      println ref
+      println url
+      /*
+      // Create new Deployment using the GitHub Deployment API
+      def response = httpRequest authentication: 'issc29-GH', httpMode: 'POST', requestBody: deployBody, responseHandle: 'STRING', url: deployURL
+      if(response.status != 201) {
+          error("Deployment API Create Failed: " + response.status)
+      }
+
+      // Get the ID of the GitHub Deployment just created
+      def responseJson = readJSON text: response.content
+      def id = responseJson.id
+      if(id == "") {
+          error("Could not extract id from Deployment response")
+      }
+
+      // Execute Deployment
+      // mvn deploy:deploy
+
+      //def result = 'failure'
+      def result = 'success'
+
+      def deployStatusBody = '{"state": "' + result + '","target_url": "http://github.com/deploymentlogs"}'
+      def deployStatusURL = "https://api.github.com/repos/${owner}/${repo}/deployments/${id}/statuses"
+      def response2 = httpRequest authentication: 'issc29-GH', httpMode: 'POST', requestBody: deployStatusBody , responseHandle: 'STRING', url: deployStatusURL
+      if(response2.status != 201) {
+        error("Deployment Status API Update Failed: " + response2.status)
+      }
+      */
+
+   }
 }

@@ -12,13 +12,13 @@ This repo demonstrates how to post back to the [GitHub Deployment API](https://d
 ## How it Works
 
 The Jenkins pipeline has 2 stages: build and deploy.
-    - Build Stage:
-      - Maven command is run to build the project.
-     - Deploy Stage
-       - Creates a GitHub Deployment via API using the HTTP Request Plugin
-       - Saves the deployment id of the deployment just created
-       - Executes the deployment
-       - Creates a GitHub Deployment Status based on the outcome of the deployment via API using the HTTP Request Plugin
+  * Build Stage:
+    * Maven command is run to build the project.
+  * Deploy Stage
+    * Creates a GitHub Deployment via API using the HTTP Request Plugin
+    * Saves the deployment id of the deployment just created
+    * Executes the deployment
+    * Creates a GitHub Deployment Status based on the outcome of the deployment via API using the HTTP Request Plugin
 
 ## License
 

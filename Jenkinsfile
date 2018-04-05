@@ -16,7 +16,7 @@ node {
       def environment = "Prod"
       def description = "Deploying my branch"
       def ref = scmVars.GIT_COMMIT
-      def owner = "mfilosa"
+      def owner = "GitHub-JenkinsDay"
       def repo = "jenkins-deployment-api"
       def deployURL = "https://api.github.com/repos/${owner}/${repo}/deployments"
       def deployBody = '{"ref": "' + ref +'","environment": "' + environment  +'","description": "' + description + '"}'

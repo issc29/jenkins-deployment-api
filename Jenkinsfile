@@ -4,7 +4,7 @@ node {
     stage('build') {
 
       // Use Maven Tool
-      env.PATH="${tool 'M3'}/bin:${env.PATH}"
+      env.PATH="${tool 'MAVEN3'}/bin:${env.PATH}"
       scmVars = checkout scm
 
       // Run Build

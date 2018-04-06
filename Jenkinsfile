@@ -11,12 +11,6 @@ node {
       sh 'mvn clean install'
     }
 
-        stage('Test') {
-            steps {
-                echo 'Testing..'
-            }
-        }
-    
     stage('Deploy') {
 
       def environment = "Prod"

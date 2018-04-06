@@ -11,6 +11,23 @@ node {
       sh 'mvn clean install'
     }
 
+    def coverageTest() {
+    context="continuous-integration/jenkins/coverage"
+    setBuildStatus ("${context}", 'Checking code coverage levels', 'PENDING')
+
+    coverageTestStatus = true
+
+    try {
+        mvn 'cobertura:check'
+    } catch (err) {
+        setBuildStatus("${context}", 'Code coverage below 90%', 'FAILURE')
+        throw err
+    }
+
+    setBuildStatus ("${context}", 'Code coverage above 90%', 'SUCCESS')
+
+}
+    
     stage('Deploy') {
 
       def environment = "Prod"

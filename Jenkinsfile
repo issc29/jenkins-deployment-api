@@ -11,12 +11,11 @@ node {
       sh 'mvn clean install'
     }
 
-    def coverageTest() {
-    context="continuous-integration/jenkins/coverage"
-    setBuildStatus ("${context}", 'Checking code coverage levels', 'PENDING')
-
-    coverageTestStatus = true
-    }
+        stage('Test') {
+            steps {
+                echo 'Testing..'
+            }
+        }
     
     stage('Deploy') {
 

@@ -25,8 +25,8 @@ node {
      def StatusBody =
      '{"state": "' + result +
      '","target_url":' + target_url +
-     '","description": "The security scan succeeded!"' +
-     '","context": "continuous-integration/jenkins"'
+     ',"description": "The security scan succeeded!"' +
+     '","context": "continuous-integration/jenkins"}'
 
      echo StatusBody
 

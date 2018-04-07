@@ -10,11 +10,26 @@ node {
       // Run Build
       sh 'mvn clean install'
     }
-    
+
     stage('Test') {
-            
+
      echo 'Performing test'
-            
+
+     // Record result of test with GitHub Status API
+     def result = "success"
+     def target_url = "http://http://ec2-107-21-82-212.compute-1.amazonaws.com/jenkins/job/GitHub-JenkinsDay/job/jenkins-deployment-api/job/master/"
+     def owner = "GitHub-JenkinsDay"
+     def repo = "jenkins-deployment-api"
+     def ref = scmVars.GIT_COMMIT
+
+     def StatusBody = '{"state": "' + result + '","target_url": "http://http://ec2-107-21-82-212.compute-1.amazonaws.com/jenkins/job/GitHub-JenkinsDay/job/jenkins-deployment-api/job/master/}' + '"description": "The security scan succeeded!",
+  "context": "continuous-integration/jenkins"
+
+     def StatusURL = "https://api.github.com/repos/${owner}/${repo}/statuses/${ref}"
+     def StatusResponse = httpRequest authentication: 'mfilosaPAT', httpMode: 'POST', requestBody: StatusBody , responseHandle: 'STRING', url: StatusURL
+     if(StatusResponse.status != 201) {
+       error("Status API Update Failed: " + StatusResponse.status)
+
      }
 
     stage('Deploy') {
@@ -26,8 +41,8 @@ node {
       def repo = "jenkins-deployment-api"
       def deployURL = "https://api.github.com/repos/${owner}/${repo}/deployments"
       def deployBody = '{"ref": "' + ref +'","environment": "' + environment  +'","description": "' + description + '","required_contexts": []}'
-     
-      
+
+
 
       // Create new Deployment using the GitHub Deployment API
       def response = httpRequest authentication: 'mfilosaPAT', httpMode: 'POST', requestBody: deployBody, responseHandle: 'STRING', url: deployURL, validResponseCodes: '100:599'

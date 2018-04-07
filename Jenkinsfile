@@ -23,7 +23,7 @@ node {
      def ref = scmVars.GIT_COMMIT
 
      def StatusBody = '{"state": "' + result + '","target_url": "http://http://ec2-107-21-82-212.compute-1.amazonaws.com/jenkins/job/GitHub-JenkinsDay/job/jenkins-deployment-api/job/master/}' + '"description": "The security scan succeeded!",
-  "context": "continuous-integration/jenkins"
+  "context": "continuous-integration/jenkins"'
 
      def StatusURL = "https://api.github.com/repos/${owner}/${repo}/statuses/${ref}"
      def StatusResponse = httpRequest authentication: 'mfilosaPAT', httpMode: 'POST', requestBody: StatusBody , responseHandle: 'STRING', url: StatusURL

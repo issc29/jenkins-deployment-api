@@ -16,13 +16,17 @@ node {
      echo 'Performing test'
 
      // Record result of test with GitHub Status API
-     def result = "success"
-     def target_url = "http://http://ec2-107-21-82-212.compute-1.amazonaws.com/jenkins/job/GitHub-JenkinsDay/job/jenkins-deployment-api/job/master/"
+     def result = 'success'
+     def target_url = 'http://http://ec2-107-21-82-212.compute-1.amazonaws.com/jenkins/job/GitHub-JenkinsDay/job/jenkins-deployment-api/job/master/'
      def owner = "GitHub-JenkinsDay"
      def repo = "jenkins-deployment-api"
      def ref = scmVars.GIT_COMMIT
 
-     def StatusBody = '{"state": "' + result + '","target_url": "http://http://ec2-107-21-82-212.compute-1.amazonaws.com/jenkins/job/GitHub-JenkinsDay/job/jenkins-deployment-api/job/master/}' + '","description": "The security scan succeeded!"' + '","context": "continuous-integration/jenkins"'
+     def StatusBody =
+     '{"state": "' + result + 
+     '","target_url":' + target_url +
+     '","description": "The security scan succeeded!"' +
+     '","context": "continuous-integration/jenkins"'
 
      def StatusURL = "https://api.github.com/repos/${owner}/${repo}/statuses/${ref}"
 

@@ -4,27 +4,51 @@ node {
     stage('build') {
 
       // Use Maven Tool
-      env.PATH="${tool 'M3'}/bin:${env.PATH}"
+      env.PATH="${tool 'MAVEN3'}/bin:${env.PATH}"
       scmVars = checkout scm
 
       // Run Build
       sh 'mvn clean install'
     }
 
+    stage('Test') {
+
+     echo 'Performing test'
+
+     // Record result of test with GitHub Status API
+     def result = "success"
+     def target_url = "http://http://ec2-107-21-82-212.compute-1.amazonaws.com/jenkins/job/GitHub-JenkinsDay/job/jenkins-deployment-api/job/master/"
+     def owner = "GitHub-JenkinsDay"
+     def repo = "jenkins-deployment-api"
+     def ref = scmVars.GIT_COMMIT
+
+     def StatusBody = '{"state": "' + result + '","target_url": "http://http://ec2-107-21-82-212.compute-1.amazonaws.com/jenkins/job/GitHub-JenkinsDay/job/jenkins-deployment-api/job/master/}' + '"description": "The security scan succeeded!",
+  "context": "continuous-integration/jenkins"'
+
+     def StatusURL = "https://api.github.com/repos/${owner}/${repo}/statuses/${ref}"
+     def StatusResponse = httpRequest authentication: 'mfilosaPAT', httpMode: 'POST', requestBody: StatusBody , responseHandle: 'STRING', url: StatusURL
+     if(StatusResponse.status != 201) {
+       error("Status API Update Failed: " + StatusResponse.status)
+
+     }
+
     stage('Deploy') {
 
       def environment = "Prod"
       def description = "Deploying my branch"
       def ref = scmVars.GIT_COMMIT
-      def owner = "issc29"
+      def owner = "GitHub-JenkinsDay"
       def repo = "jenkins-deployment-api"
       def deployURL = "https://api.github.com/repos/${owner}/${repo}/deployments"
-      def deployBody = '{"ref": "' + ref +'","environment": "' + environment  +'","description": "' + description + '"}'
+      def deployBody = '{"ref": "' + ref +'","environment": "' + environment  +'","description": "' + description + '","required_contexts": []}'
+
+
 
       // Create new Deployment using the GitHub Deployment API
-      def response = httpRequest authentication: 'issc29-GH', httpMode: 'POST', requestBody: deployBody, responseHandle: 'STRING', url: deployURL
+      def response = httpRequest authentication: 'mfilosaPAT', httpMode: 'POST', requestBody: deployBody, responseHandle: 'STRING', url: deployURL, validResponseCodes: '100:599'
+
       if(response.status != 201) {
-          error("Deployment API Create Failed: " + response.status)
+          error("Deployment API Create Failed: " + response.status + response.content)
       }
 
       // Get the ID of the GitHub Deployment just created
@@ -41,7 +65,7 @@ node {
       def result = (deployStatus) ? 'failure' : 'success'
       def deployStatusBody = '{"state": "' + result + '","target_url": "http://github.com/deploymentlogs"}'
       def deployStatusURL = "https://api.github.com/repos/${owner}/${repo}/deployments/${id}/statuses"
-      def deployStatusResponse = httpRequest authentication: 'issc29-GH', httpMode: 'POST', requestBody: deployStatusBody , responseHandle: 'STRING', url: deployStatusURL
+      def deployStatusResponse = httpRequest authentication: 'mfilosaPAT', httpMode: 'POST', requestBody: deployStatusBody , responseHandle: 'STRING', url: deployStatusURL
       if(deployStatusResponse.status != 201) {
         error("Deployment Status API Update Failed: " + deployStatusResponse.status)
       }

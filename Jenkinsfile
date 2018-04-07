@@ -23,10 +23,12 @@ node {
      def ref = scmVars.GIT_COMMIT
 
      def StatusBody =
-     '{"state": "' + result + 
+     '{"state": "' + result +
      '","target_url":' + target_url +
      '","description": "The security scan succeeded!"' +
      '","context": "continuous-integration/jenkins"'
+
+     echo StatusBody
 
      def StatusURL = "https://api.github.com/repos/${owner}/${repo}/statuses/${ref}"
 

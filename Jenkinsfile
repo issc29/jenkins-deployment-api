@@ -31,7 +31,7 @@ node {
        error("Status API Update Failed: " + StatusResponse.status)
 
      }
-
+}
     stage('Deploy') {
 
       def environment = "Prod"

@@ -10,6 +10,7 @@ node {
       // Run Build
       sh 'mvn clean install'
     }
+
     stage('Code Quality') {
 
      echo 'Performing Code Quality Scan'
@@ -36,6 +37,7 @@ node {
        error("Status API Update Failed: " + StatusResponse.status)
 
      }
+}     
     stage('Security Scan') {
 
      echo 'Performing security scan'

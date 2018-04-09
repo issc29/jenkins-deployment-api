@@ -1,7 +1,7 @@
 node {
     def scmVars
 
-    stage('build') {
+    stage('Build') {
 
       // Use Maven Tool
       env.PATH="${tool 'MAVEN3'}/bin:${env.PATH}"
@@ -11,27 +11,60 @@ node {
       sh 'mvn clean install'
     }
 
-    stage('Test') {
+    stage('Code Quality') {
 
-     echo 'Performing test'
+     echo 'Performing Code Quality Scan'
 
      // Record result of test with GitHub Status API
-     def result = "success"
-     def target_url = "http://http://ec2-107-21-82-212.compute-1.amazonaws.com/jenkins/job/GitHub-JenkinsDay/job/jenkins-deployment-api/job/master/"
+     def result = 'success'
+     def target_url = 'http://http://ec2-107-21-82-212.compute-1.amazonaws.com/jenkins/job/GitHub-JenkinsDay/job/jenkins-deployment-api/job/master/'
      def owner = "GitHub-JenkinsDay"
      def repo = "jenkins-deployment-api"
      def ref = scmVars.GIT_COMMIT
 
-     def StatusBody = '{"state": "' + result + '","target_url": "http://http://ec2-107-21-82-212.compute-1.amazonaws.com/jenkins/job/GitHub-JenkinsDay/job/jenkins-deployment-api/job/master/}' + '"description": "The security scan succeeded!",
-  "context": "continuous-integration/jenkins"
+     def StatusBody =
+     '{"state": "' + result +
+     '","target_url": "' + target_url +
+     '","description": "The security scan succeeded!"' +
+     ',"context": "continuous-integration/code-quality"}'
+
+     echo StatusBody
 
      def StatusURL = "https://api.github.com/repos/${owner}/${repo}/statuses/${ref}"
+
      def StatusResponse = httpRequest authentication: 'mfilosaPAT', httpMode: 'POST', requestBody: StatusBody , responseHandle: 'STRING', url: StatusURL
      if(StatusResponse.status != 201) {
        error("Status API Update Failed: " + StatusResponse.status)
 
      }
+}     
+    stage('Security Scan') {
 
+     echo 'Performing security scan'
+
+     // Record result of test with GitHub Status API
+     def result = 'success'
+     def target_url = 'http://http://ec2-107-21-82-212.compute-1.amazonaws.com/jenkins/job/GitHub-JenkinsDay/job/jenkins-deployment-api/job/master/'
+     def owner = "GitHub-JenkinsDay"
+     def repo = "jenkins-deployment-api"
+     def ref = scmVars.GIT_COMMIT
+
+     def StatusBody =
+     '{"state": "' + result +
+     '","target_url": "' + target_url +
+     '","description": "The security scan succeeded!"' +
+     ',"context": "continuous-integration/security-scan"}'
+
+     echo StatusBody
+
+     def StatusURL = "https://api.github.com/repos/${owner}/${repo}/statuses/${ref}"
+
+     def StatusResponse = httpRequest authentication: 'mfilosaPAT', httpMode: 'POST', requestBody: StatusBody , responseHandle: 'STRING', url: StatusURL
+     if(StatusResponse.status != 201) {
+       error("Status API Update Failed: " + StatusResponse.status)
+
+     }
+}
     stage('Deploy') {
 
       def environment = "Prod"

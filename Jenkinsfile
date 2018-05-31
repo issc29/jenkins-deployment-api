@@ -17,7 +17,7 @@ node {
 
      // Record result of test with GitHub Status API
      def result = 'success'
-     def target_url = 'http://http://ec2-107-21-82-212.compute-1.amazonaws.com/jenkins/job/GitHub-JenkinsDay/job/jenkins-deployment-api/job/master/'
+     def target_url = 'http://workshop-jenkins.octodemoapps.com/jenkins/job/GitHub-JenkinsDay/job/jenkins-deployment-api/job/master/'
      def owner = "GitHub-JenkinsDay"
      def repo = "jenkins-deployment-api"
      def ref = scmVars.GIT_COMMIT
@@ -44,7 +44,7 @@ node {
 
      // Record result of test with GitHub Status API
      def result = 'success'
-     def target_url = 'http://http://ec2-107-21-82-212.compute-1.amazonaws.com/jenkins/job/GitHub-JenkinsDay/job/jenkins-deployment-api/job/master/'
+     def target_url = 'http://workshop-jenkins.octodemoapps.com/jenkins/job/GitHub-JenkinsDay/job/jenkins-deployment-api/job/master/'
      def owner = "GitHub-JenkinsDay"
      def repo = "jenkins-deployment-api"
      def ref = scmVars.GIT_COMMIT

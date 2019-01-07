@@ -41,7 +41,7 @@ node {
       def result = (deployStatus) ? 'failure' : 'success'
       def deployStatusBody = '{"state": "' + result + '","target_url": "http://github.com/deploymentlogs"}'
       def deployStatusURL = "https://api.github.com/repos/${owner}/${repo}/deployments/${id}/statuses"
-      def deployStatusResponse = httpRequest authentication: 'issc29-GH', httpMode: 'POST', requestBody: deployStatusBody , responseHandle: 'STRING', url: deployStatusURL
+      def deployStatusResponse = httpRequest authentication: 'MarsMike-GH', httpMode: 'POST', requestBody: deployStatusBody , responseHandle: 'STRING', url: deployStatusURL
       if(deployStatusResponse.status != 201) {
         error("Deployment Status API Update Failed: " + deployStatusResponse.status)
       }

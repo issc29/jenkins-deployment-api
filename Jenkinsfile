@@ -8,7 +8,7 @@ node {
       scmVars = checkout scm
 
       // Run Build
-      sh 'mvn clean install'
+      sh '_JAVA_OPTIONS=-Djdk.net.URLClassPath.disableClassPathURLCheck=true mvn clean install'
     }
 
     stage('Deploy') {

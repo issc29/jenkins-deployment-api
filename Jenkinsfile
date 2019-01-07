@@ -16,13 +16,13 @@ node {
       def environment = "Prod"
       def description = "Deploying my branch"
       def ref = scmVars.GIT_COMMIT
-      def owner = "issc29"
+      def owner = "MarsMike"
       def repo = "jenkins-deployment-api"
       def deployURL = "https://api.github.com/repos/${owner}/${repo}/deployments"
       def deployBody = '{"ref": "' + ref +'","environment": "' + environment  +'","description": "' + description + '"}'
 
       // Create new Deployment using the GitHub Deployment API
-      def response = httpRequest authentication: 'issc29-GH', httpMode: 'POST', requestBody: deployBody, responseHandle: 'STRING', url: deployURL
+      def response = httpRequest authentication: 'MarsMike-GH', httpMode: 'POST', requestBody: deployBody, responseHandle: 'STRING', url: deployURL
       if(response.status != 201) {
           error("Deployment API Create Failed: " + response.status)
       }

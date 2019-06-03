@@ -3,21 +3,23 @@
 # Add steps that analyze code, save build artifacts, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/java
 
-trigger:
-- master
-
-pool:
-  vmImage: 'ubuntu-latest'
-
 jobs:
 - job: A
+  trigger:
+  - master
+  pool:
+    vmImage: 'ubuntu-latest'
   steps:
   - bash: echo "A"
 
 - job: B
+  pool:
+    vmImage: 'ubuntu-latest'
   steps:
   - bash: echo "B"
 - job: C
+  pool:
+    vmImage: 'ubuntu-latest'
   dependsOn:
   - A
   - B
